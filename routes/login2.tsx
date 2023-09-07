@@ -1,5 +1,6 @@
 import { Handlers, PageProps } from "$fresh/server.ts";
 
+const baseUrl = "https://open-redirects-example.deno.dev/"
 
 export const handler: Handlers<Data> = {
   GET(req, ctx) {
@@ -9,18 +10,19 @@ export const handler: Handlers<Data> = {
     const redirect = url.searchParams.get("redirect");
     
     if(user=="admin" && password=="password"){
-      console.log(redirect);
-      
-      return Response.redirect(redirect || "https://open-redirects-example.deno.dev/")
+      if (redirect?.startsWith(baseUrl)) {
+        return Response.redirect(redirect || baseUrl )
+      }
+      return Response.redirect(baseUrl+"greet/ilegallurl")
     }
     if(user || password){
       return ctx.render({
-        redirect: redirect ||  "https://open-redirects-example.deno.dev/",
+        redirect: redirect ||  baseUrl,
         loginerror: true
       });
     }
 
-    return ctx.render({redirect: redirect ||  "https://open-redirects-example.deno.dev/"});
+    return ctx.render({redirect: redirect ||  baseUrl});
   },
 };
 
