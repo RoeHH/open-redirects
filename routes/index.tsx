@@ -1,6 +1,14 @@
+import { Handlers, PageProps } from "$fresh/server.ts";
 
 
-export default function Home() {
+export const handler: Handlers<Data> = {
+    GET(req, ctx) {
+      const url = new URL(req.url)
+      return ctx.render({happy: url.searchParams.get("happy")})
+    }
+}
+
+export default function Home({ data }: PageProps<{happy: boolean | null}>) {
     return (
         <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
         <div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -14,7 +22,7 @@ export default function Home() {
             One bright and sunny morning, Max awoke to the chirping of birds and the rustling of leaves. He stretched his furry arms, yawned widely, and leaped from branch to branch, swinging effortlessly through the trees. His stomach rumbled, reminding him of his never-ending quest for the perfect banana.
 
             As Max swung through the dense canopy... 
-            <a href="/login?redirect=https://open-redirects-example.deno.dev/" class="font-bold text-blue-700">Login To Read More</a>
+            <a href="/login?redirect=https://open-redirects-example.deno.dev/?happy=true" class="font-bold text-blue-700">Login To Read More</a>
         </div>
       </div>
     )
